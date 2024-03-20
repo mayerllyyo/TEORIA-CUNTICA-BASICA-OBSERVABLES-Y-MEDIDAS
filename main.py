@@ -1,3 +1,64 @@
+def hermitiana_media_varianza(m,v):
+    # Función para calcular el conjugado de un vector complejo
+    def b(v):
+        for i in range(len(v)):
+            v[i] = v[i].conjugate()
+        return v
+        
+    # Función para calcular la acción de una matriz sobre un vector
+    def accion(v, m):
+        ans = [0] * len(m)
+        for i in range(len(m)):
+            aux = 0
+            for j in range(len(m[i])):
+                aux += m[i][j] * v[j]
+            ans[i] = aux
+        return ans
+        
+    # Función para calcular el producto interno entre dos vectores
+    def prod_inter(v1, v2):
+        ans = 0
+        for i in range(len(v1)):
+            v1[i] = v1[i].conjugate()
+            ans += v1[i] * v2[i]
+        return ans
+    # Función para calcular el producto de dos matrices        
+    def prod_mat(m1, m2):
+            ans = [[0 for j in range(len(m2[0]))] for i in range(len(m1))]
+            for i in range(len(m1)):
+                for j in range(len(m2[0])):
+                    aux = 0
+                    for k in range(len(m2)):
+                        aux = m1[i][k] * m2[k][j]
+                    ans[i][j] = aux
+            return ans
+    b_v=b(v)
+    ax_v=accion(v,m)
+    media=prod_inter(ax_v,b_v)
+    matri=[[media * -1 for i in range(len(m[0]))] for j in range(len(m))]
+    for i in range(len(m)):
+        for j in range(len(m)):
+            matri[i][j] += m[i][j]
+    matriz=prod_mat(matri,matri)
+    var=prod_inter(accion(v,matriz),b_v)
+    return media,var
+# Ejemplo de uso de la funcion hermitiana_media_varianza
+v = np.array([1, 2, 3])  
+m = np.array([[1, 0, 0], [0, 2, 0], [0, 0, 3]])  
+
+m = [[1, 2+1j, 3], [2-1j, 4, 5+2j], [3, 5-2j, 6]]
+v = [1, 2, 3]
+# Calcular la media y la varianza
+media, varianza = hermitiana_media_varianza(m, v)
+# Imprimir resultados
+print("La media del observable es:", media)
+print("La varianza del observable es:", varianza)
+
+
+
+
+
+
 
 import numpy as np
 # probabilidad de encontrarlo en una posición en particular.
